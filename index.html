@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#f6f5f1" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#14161b" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Projekt">
+<title>Projekt</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%231a1d24'/%3E%3Ctext x='32' y='43' font-family='system-ui,sans-serif' font-size='30' font-weight='700' fill='%23f6f5f1' text-anchor='middle'%3EDH%3C/text%3E%3C/svg%3E">
+<style>
+  :root {
+    --paper: #f6f5f1;
+    --paper-raised: #ffffff;
+    --paper-line: #e2e1da;
+    --ink: #1a1d24;
+    --ink-soft: #565a63;
+    --ink-faint: #8b8e95;
+    --shadow-sm: 0 1px 2px rgba(15, 33, 64, 0.04), 0 2px 8px rgba(15, 33, 64, 0.04);
+    --shadow-lg: 0 2px 4px rgba(15, 33, 64, 0.05), 0 18px 44px rgba(15, 33, 64, 0.13);
+    --radius: 18px;
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --mono: ui-monospace, "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+    --wash-mix: 9%;
+    --tint-mix: 75%;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #14161b;
+      --paper-raised: #1c1f26;
+      --paper-line: #2a2e37;
+      --ink: #eceae4;
+      --ink-soft: #a8abb2;
+      --ink-faint: #6f737b;
+      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+      --shadow-lg: 0 2px 4px rgba(0, 0, 0, 0.3), 0 18px 44px rgba(0, 0, 0, 0.45);
+      --wash-mix: 16%;
+      --tint-mix: 45%;
+    }
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 1040px;
+    margin: 0 auto;
+    padding: calc(56px + env(safe-area-inset-top)) 16px calc(40px + env(safe-area-inset-bottom));
+  }
+
+  /* ---------- Rubrik ---------- */
+  header { margin-bottom: 44px; }
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin: 0 0 10px;
+  }
+  h1 {
+    font-size: clamp(2.2rem, 7vw, 3.4rem);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    font-weight: 700;
+    margin: 0;
+  }
+  .lead {
+    margin: 14px 0 0;
+    color: var(--ink-soft);
+    font-size: 1.05rem;
+    max-width: 34ch;
+  }
+
+  /* ---------- Grupper ---------- */
+  section + section { margin-top: 40px; }
+  h2 {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin: 0 0 14px;
+  }
+  h2::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--paper-line);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+    gap: 14px;
+  }
+
+  /* ---------- Kort ---------- */
+  .card {
+    --c: #2c5490;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 20px;
+    min-height: 168px;
+    border-radius: var(--radius);
+    background:
+      linear-gradient(160deg, color-mix(in srgb, var(--c) var(--wash-mix), transparent), transparent 60%),
+      var(--paper-raised);
+    border: 1px solid var(--paper-line);
+    box-shadow: var(--shadow-sm);
+    color: inherit;
+    text-decoration: none;
+    overflow: hidden;
+    transition: transform 0.35s var(--ease-out), box-shadow 0.35s var(--ease-out), border-color 0.35s;
+    opacity: 0;
+    transform: translateY(10px);
+    animation: rise 0.6s var(--ease-out) forwards;
+    animation-delay: calc(var(--i, 0) * 45ms);
+  }
+  .card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
+    border-color: color-mix(in srgb, var(--c) 35%, var(--paper-line));
+  }
+  .card:active { transform: translateY(-1px) scale(0.99); }
+  .card:focus-visible { outline: 3px solid color-mix(in srgb, var(--c) 45%, transparent); outline-offset: 2px; }
+  @keyframes rise { to { opacity: 1; transform: none; } }
+
+  .top { display: flex; align-items: center; gap: 14px; }
+  .icon {
+    flex: none;
+    width: 46px;
+    height: 46px;
+    border-radius: 13px;
+    object-fit: cover;
+    background: var(--paper-raised);
+    box-shadow: 0 0 0 1px var(--paper-line), 0 4px 12px color-mix(in srgb, var(--c) 22%, transparent);
+  }
+  .name { font-size: 1.12rem; font-weight: 650; letter-spacing: -0.01em; margin: 0; }
+  .tag {
+    display: inline-block;
+    margin-top: 2px;
+    font-size: 0.72rem;
+    color: color-mix(in srgb, var(--c) var(--tint-mix), var(--ink));
+    font-weight: 600;
+  }
+  .desc { margin: 0; color: var(--ink-soft); font-size: 0.94rem; flex: 1; }
+
+  .foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding-top: 12px;
+    border-top: 1px solid var(--paper-line);
+    font-family: var(--mono);
+    font-size: 0.76rem;
+    color: var(--ink-faint);
+  }
+  .url { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .arrow {
+    flex: none;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: color-mix(in srgb, var(--c) 12%, transparent);
+    color: color-mix(in srgb, var(--c) var(--tint-mix), var(--ink));
+    transition: transform 0.35s var(--ease-out), background 0.35s;
+  }
+  .arrow svg { width: 13px; height: 13px; }
+  .card:hover .arrow { transform: translate(2px, -2px); background: var(--c); color: #fff; }
+
+  /* ---------- Storlekar ---------- */
+  .grid-xl { grid-template-columns: repeat(auto-fill, minmax(min(100%, 420px), 1fr)); gap: 16px; }
+  .card-xl { min-height: 230px; padding: 26px; gap: 18px; }
+  .card-xl .icon { width: 64px; height: 64px; border-radius: 17px; }
+  .card-xl .name { font-size: 1.55rem; letter-spacing: -0.02em; }
+  .card-xl .tag { font-size: 0.8rem; }
+  .card-xl .desc { font-size: 1.02rem; }
+  .card-xl::before {
+    content: "";
+    position: absolute;
+    right: -60px;
+    top: -60px;
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    background: radial-gradient(circle, color-mix(in srgb, var(--c) 18%, transparent), transparent 70%);
+    pointer-events: none;
+  }
+  .grid-lg { grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 16px; }
+  .card-lg { min-height: 180px; }
+  .grid-sm { grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 12px; }
+  .card-sm { min-height: 0; padding: 16px; gap: 10px; }
+  .card-sm .icon { width: 40px; height: 40px; border-radius: 11px; }
+  .card-sm .name { font-size: 1rem; }
+  .card-sm .desc { font-size: 0.86rem; }
+  .card-sm .foot { padding-top: 10px; font-size: 0.7rem; }
+
+  footer {
+    margin-top: 64px;
+    text-align: center;
+    font-size: 0.72rem;
+    color: var(--ink-faint);
+    opacity: 0.8;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .card { animation: none; opacity: 1; transform: none; transition: none; }
+    .arrow { transition: none; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <p class="eyebrow">Projekt</p>
+    <h1>David Hefner</h1>
+    <p class="lead">Saker jag har byggt, samlade på ett ställe.</p>
+  </header>
+
+  <main id="groups"></main>
+
+  <footer>Made by: David Hefner</footer>
+</div>
+
+<script>
+  // Ordningen speglar hur stora projekten är: stora kort överst, mindre längre ner.
+  const P = {
+    reduceraren: { name: "Reduceraren", tag: "Stryktipset · Topptipset · PowerPlay", logo: "logos/reduceraren.png", color: "#1e6a42",
+      desc: "Bygg och reducera system, rätta live och följ utdelningen.", url: "https://reduceraren.se" },
+    kc: { name: "Krokens Copa", tag: "Tipptävling", logo: "logos/kc.png", color: "#0f2d51",
+      desc: "Tippa matchresultat mot gänget, med flera ligor och gemensam topplista.", url: "https://krokenscopa.pages.dev" },
+    bokis: { name: "Bokis", tag: "Friskis & Svettis", logo: "logos/bokis.png", color: "#8c2b2b",
+      desc: "Bokar gruppträningspassen automatiskt.", url: "https://bokis-39k.pages.dev/" },
+    abc: { name: "ABC & 123", tag: "Alice, Lily & Bo", logo: "logos/abc.png", color: "#6b3fd4",
+      desc: "Läs-, skriv- och räknespel för barnen på surfplattan.", url: "https://vg1414.github.io/AliceLily/" },
+    wsop: { name: "WSOP Fantasy", tag: "Gängets liga", logo: "logos/wsop.png", color: "#c0392b",
+      desc: "Följ Pick 8-fantasyligan i realtid under World Series of Poker.", url: "https://vg1414.github.io/wsop-fantasy-2026/" },
+    blackbook: { name: "Black Book", tag: "Skuldboken", logo: "logos/blackbook.png", color: "#6b5a3a",
+      desc: "Håll koll på skulder, vinster och förluster efter spelkvällarna.", url: "https://vg1414.github.io/BlackBook/" },
+    bad: { name: "Badläget", tag: "Costa del Sol", logo: "logos/bad.png", color: "#d9822b",
+      desc: "Badläge för stränderna i Torremolinos, Benalmádena och Fuengirola, plus vädret i Västerås.", url: "https://vg1414.github.io/Bad/" },
+    traning: { name: "Träningslogg", tag: "Styrka & cardio", logo: "logos/traning.png", color: "#25606b",
+      desc: "Logga passen, se statistiken och synka mellan enheter.", url: "https://vg1414.github.io/traning/" }
+  };
+
+  const GROUPS = [
+    { title: "Största projekten", size: "xl", items: [P.reduceraren, P.kc] },
+    { title: "Därefter", size: "lg", items: [P.bokis, P.abc, P.blackbook] },
+    { title: "Mindre projekt", size: "sm", items: [P.wsop, P.bad, P.traning] }
+  ];
+
+  const ARROW = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M9 7h8v8"/></svg>';
+
+  const escape = (s) => s.replace(/[&<>"]/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[ch]));
+  const prettyUrl = (u) => u.replace(/^https?:\/\//, "").replace(/\/$/, "");
+
+  let i = 0;
+  document.getElementById("groups").innerHTML = GROUPS.map((g) => `
+    <section>
+      <h2>${escape(g.title)}</h2>
+      <div class="grid grid-${g.size}">
+        ${g.items.map((p) => `
+          <a class="card card-${g.size}" href="${p.url}" target="_blank" rel="noopener" style="--c:${p.color};--i:${i++}">
+            <div class="top">
+              <img class="icon" src="${p.logo}" alt="" width="46" height="46" loading="lazy">
+              <div>
+                <p class="name">${escape(p.name)}</p>
+                <span class="tag">${escape(p.tag)}</span>
+              </div>
+            </div>
+            <p class="desc">${escape(p.desc)}</p>
+            <div class="foot"><span class="url">${prettyUrl(p.url)}</span><span class="arrow">${ARROW}</span></div>
+          </a>`).join("")}
+      </div>
+    </section>`).join("");
+</script>
+</body>
+</html>
