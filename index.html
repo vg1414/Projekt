@@ -4,294 +4,487 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
-<meta name="theme-color" content="#f6f5f1" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#14161b" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#05060d">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Projekt">
 <title>Projekt</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%231a1d24'/%3E%3Ctext x='32' y='43' font-family='system-ui,sans-serif' font-size='30' font-weight='700' fill='%23f6f5f1' text-anchor='middle'%3EDH%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23ffd38a'/%3E%3Cstop offset='.5' stop-color='%23ff7a9c'/%3E%3Cstop offset='1' stop-color='%23a98bff'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='%2305060d'/%3E%3Cpath d='M18 46 46 18M30 18h16v16' fill='none' stroke='url(%23g)' stroke-width='7' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
 <style>
   :root {
-    --paper: #f6f5f1;
-    --paper-raised: #ffffff;
-    --paper-line: #e2e1da;
-    --ink: #1a1d24;
-    --ink-soft: #565a63;
-    --ink-faint: #8b8e95;
-    --shadow-sm: 0 1px 2px rgba(15, 33, 64, 0.04), 0 2px 8px rgba(15, 33, 64, 0.04);
-    --shadow-lg: 0 2px 4px rgba(15, 33, 64, 0.05), 0 18px 44px rgba(15, 33, 64, 0.13);
-    --radius: 18px;
+    --bg: #05060d;
+    --ink: #f4f1ea;
+    --ink-soft: rgba(244, 241, 234, 0.66);
+    --ink-faint: rgba(244, 241, 234, 0.4);
+    --line: rgba(255, 255, 255, 0.08);
+    --glass: rgba(18, 20, 34, 0.55);
     --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
     --mono: ui-monospace, "SFMono-Regular", Consolas, "Liberation Mono", monospace;
-    --wash-mix: 9%;
-    --tint-mix: 75%;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --paper: #14161b;
-      --paper-raised: #1c1f26;
-      --paper-line: #2a2e37;
-      --ink: #eceae4;
-      --ink-soft: #a8abb2;
-      --ink-faint: #6f737b;
-      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
-      --shadow-lg: 0 2px 4px rgba(0, 0, 0, 0.3), 0 18px 44px rgba(0, 0, 0, 0.45);
-      --wash-mix: 16%;
-      --tint-mix: 45%;
-    }
   }
 
   * { box-sizing: border-box; }
-  html { -webkit-text-size-adjust: 100%; }
   body {
     margin: 0;
-    background: var(--paper);
+    min-height: 100vh;
+    background: var(--bg);
     color: var(--ink);
     font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
-    line-height: 1.5;
     -webkit-font-smoothing: antialiased;
+    -webkit-tap-highlight-color: transparent;
+    overflow-x: hidden;
   }
 
+  /* ---------- Rymden ---------- */
+  .nebula {
+    position: fixed;
+    inset: -20%;
+    pointer-events: none;
+    background:
+      radial-gradient(40% 35% at 22% 30%, rgba(107, 63, 212, 0.28), transparent 70%),
+      radial-gradient(35% 30% at 80% 70%, rgba(30, 140, 110, 0.22), transparent 70%),
+      radial-gradient(30% 28% at 75% 20%, rgba(242, 182, 49, 0.14), transparent 70%),
+      radial-gradient(45% 40% at 30% 85%, rgba(192, 57, 43, 0.16), transparent 70%);
+    filter: blur(20px);
+    animation: drift 40s ease-in-out infinite alternate;
+  }
+  @keyframes drift { to { transform: translate(3%, -2%) rotate(6deg) scale(1.08); } }
+  /* Ett extra sken i färgen på raden man pekar på */
+  .aura {
+    position: fixed;
+    width: 70vmax;
+    height: 70vmax;
+    left: 0;
+    top: 0;
+    margin: -35vmax 0 0 -35vmax;
+    border-radius: 50%;
+    background: radial-gradient(circle, color-mix(in srgb, var(--aura, transparent) 22%, transparent), transparent 60%);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.6s, background 0.6s;
+  }
+  body.aiming .aura { opacity: 1; }
+  .grain {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.08;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  canvas { position: fixed; inset: 0; width: 100%; height: 100%; display: block; pointer-events: none; }
+  #flash {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    pointer-events: none;
+    background: radial-gradient(circle at var(--fx, 50%) var(--fy, 50%), #fff, var(--fc, #fff) 30%, transparent 75%);
+    opacity: 0;
+  }
+
+  /* ---------- Innehåll ---------- */
   .wrap {
-    max-width: 1040px;
+    position: relative;
+    z-index: 10;
+    max-width: 1080px;
     margin: 0 auto;
-    padding: calc(56px + env(safe-area-inset-top)) 16px calc(40px + env(safe-area-inset-bottom));
+    padding: calc(48px + env(safe-area-inset-top)) 16px calc(48px + env(safe-area-inset-bottom));
   }
 
-  /* ---------- Rubrik ---------- */
-  header { margin-bottom: 44px; }
+  header { margin-bottom: clamp(36px, 7vw, 64px); }
   .eyebrow {
     font-family: var(--mono);
-    font-size: 0.75rem;
-    letter-spacing: 0.14em;
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
     text-transform: uppercase;
     color: var(--ink-faint);
-    margin: 0 0 10px;
+    margin: 0 0 8px;
   }
   h1 {
-    font-size: clamp(2.2rem, 7vw, 3.4rem);
-    line-height: 1.05;
-    letter-spacing: -0.03em;
-    font-weight: 700;
     margin: 0;
+    font-size: clamp(2.4rem, 8vw, 4.6rem);
+    line-height: 1;
+    letter-spacing: -0.04em;
+    font-weight: 800;
   }
-  .lead {
-    margin: 14px 0 0;
-    color: var(--ink-soft);
-    font-size: 1.05rem;
-    max-width: 34ch;
+  h1 span {
+    display: inline-block;
+    /* Vitt namn där ett smalt silverskimmer sveper förbi */
+    background: linear-gradient(100deg, #f4f1ea 0%, #f4f1ea 40%, #ffffff 47%, #b9bcc6 50%, #ffffff 53%, #f4f1ea 60%, #f4f1ea 100%);
+    background-size: 300% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: shimmer 7s ease-in-out infinite, letterIn 1s var(--ease-out) both;
+    animation-delay: calc(1.5s + var(--i) * 60ms), calc(0.5s + var(--i) * 40ms);
   }
+  @keyframes shimmer { 0%, 55% { background-position: 100% 0; } 100% { background-position: -50% 0; } }
+  @keyframes letterIn { from { opacity: 0; transform: translateY(0.4em) rotateX(70deg); filter: blur(8px); } }
+  .sub { margin: 12px 0 0; font-size: 1rem; color: var(--ink-soft); min-height: 1.5em; }
+  .sub b { color: var(--ink); font-weight: 600; }
+  .caret {
+    display: inline-block;
+    width: 2px;
+    height: 1em;
+    margin-left: 2px;
+    vertical-align: -0.15em;
+    background: var(--ink-soft);
+    animation: blink 1s steps(1) infinite;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
 
-  /* ---------- Grupper ---------- */
-  section + section { margin-top: 40px; }
-  h2 {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-size: 0.8rem;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--ink-faint);
-    margin: 0 0 14px;
-  }
-  h2::after {
-    content: "";
-    flex: 1;
-    height: 1px;
-    background: var(--paper-line);
-  }
-
-  .grid {
+  /* ---------- Kapslarna ---------- */
+  .apps {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
     gap: 14px;
   }
-
-  /* ---------- Kort ---------- */
-  .card {
-    --c: #2c5490;
+  .chip {
     position: relative;
     display: flex;
-    flex-direction: column;
+    align-items: center;
     gap: 14px;
-    padding: 20px;
-    min-height: 168px;
-    border-radius: var(--radius);
-    background:
-      linear-gradient(160deg, color-mix(in srgb, var(--c) var(--wash-mix), transparent), transparent 60%),
-      var(--paper-raised);
-    border: 1px solid var(--paper-line);
-    box-shadow: var(--shadow-sm);
+    min-width: 0;
+    padding: 10px 12px 10px 10px;
+    border-radius: 999px;
+    background: var(--glass);
+    border: 1px solid var(--line);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
     color: inherit;
     text-decoration: none;
     overflow: hidden;
-    transition: transform 0.35s var(--ease-out), box-shadow 0.35s var(--ease-out), border-color 0.35s;
+    isolation: isolate;
+    animation: chipIn 0.9s var(--ease-out) both;
+    animation-delay: calc(0.9s + var(--i) * 70ms);
+    transition: transform 0.4s var(--ease-out), border-color 0.3s, box-shadow 0.3s, background 0.3s;
+  }
+  @keyframes chipIn { from { opacity: 0; transform: translateY(16px) scale(0.96); filter: blur(8px); } }
+  /* Ljuset inne i kapseln följer musen i sidled */
+  .chip::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: radial-gradient(50% 160% at var(--mx, 20%) 50%, color-mix(in srgb, var(--glow) 30%, transparent), transparent 70%);
     opacity: 0;
-    transform: translateY(10px);
-    animation: rise 0.6s var(--ease-out) forwards;
-    animation-delay: calc(var(--i, 0) * 45ms);
+    transition: opacity 0.4s;
   }
-  .card:hover {
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-lg);
-    border-color: color-mix(in srgb, var(--c) 35%, var(--paper-line));
-  }
-  .card:active { transform: translateY(-1px) scale(0.99); }
-  .card:focus-visible { outline: 3px solid color-mix(in srgb, var(--c) 45%, transparent); outline-offset: 2px; }
-  @keyframes rise { to { opacity: 1; transform: none; } }
-
-  .top { display: flex; align-items: center; gap: 14px; }
-  .icon {
+  .chip img {
     flex: none;
-    width: 46px;
-    height: 46px;
-    border-radius: 13px;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
     object-fit: cover;
-    background: var(--paper-raised);
-    box-shadow: 0 0 0 1px var(--paper-line), 0 4px 12px color-mix(in srgb, var(--c) 22%, transparent);
+    background: #fff;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1), 0 0 22px color-mix(in srgb, var(--glow) 35%, transparent);
+    transition: transform 0.5s var(--ease-out), box-shadow 0.4s;
   }
-  .name { font-size: 1.12rem; font-weight: 650; letter-spacing: -0.01em; margin: 0; }
-  .tag {
-    display: inline-block;
+  .chip .text { flex: 1; min-width: 0; }
+  .chip .name {
+    display: block;
+    font-size: 1.18rem;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .chip .tag {
+    display: block;
     margin-top: 2px;
-    font-size: 0.72rem;
-    color: color-mix(in srgb, var(--c) var(--tint-mix), var(--ink));
-    font-weight: 600;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: color-mix(in srgb, var(--glow) 70%, #fff);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
-  .desc { margin: 0; color: var(--ink-soft); font-size: 0.94rem; flex: 1; }
-
-  .foot {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-    padding-top: 12px;
-    border-top: 1px solid var(--paper-line);
-    font-family: var(--mono);
-    font-size: 0.76rem;
-    color: var(--ink-faint);
-  }
-  .url { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .arrow {
     flex: none;
-    width: 26px;
-    height: 26px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     display: grid;
     place-items: center;
-    background: color-mix(in srgb, var(--c) 12%, transparent);
-    color: color-mix(in srgb, var(--c) var(--tint-mix), var(--ink));
-    transition: transform 0.35s var(--ease-out), background 0.35s;
+    border: 1px solid var(--line);
+    color: var(--ink-soft);
+    transition: transform 0.5s var(--ease-out), background 0.3s, color 0.3s, border-color 0.3s, box-shadow 0.3s;
   }
-  .arrow svg { width: 13px; height: 13px; }
-  .card:hover .arrow { transform: translate(2px, -2px); background: var(--c); color: #fff; }
+  .arrow svg { width: 16px; height: 16px; }
 
-  /* ---------- Storlekar ---------- */
-  .grid-xl { grid-template-columns: repeat(auto-fill, minmax(min(100%, 420px), 1fr)); gap: 16px; }
-  .card-xl { min-height: 230px; padding: 26px; gap: 18px; }
-  .card-xl .icon { width: 64px; height: 64px; border-radius: 17px; }
-  .card-xl .name { font-size: 1.55rem; letter-spacing: -0.02em; }
-  .card-xl .tag { font-size: 0.8rem; }
-  .card-xl .desc { font-size: 1.02rem; }
-  .card-xl::before {
-    content: "";
-    position: absolute;
-    right: -60px;
-    top: -60px;
-    width: 220px;
-    height: 220px;
-    border-radius: 50%;
-    background: radial-gradient(circle, color-mix(in srgb, var(--c) 18%, transparent), transparent 70%);
-    pointer-events: none;
+  .chip:hover, .chip:focus-visible {
+    outline: none;
+    transform: translateY(-4px);
+    border-color: color-mix(in srgb, var(--glow) 60%, transparent);
+    background: color-mix(in srgb, var(--glow) 12%, var(--glass));
+    box-shadow: 0 14px 40px color-mix(in srgb, var(--glow) 30%, transparent);
   }
-  .grid-lg { grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 16px; }
-  .card-lg { min-height: 180px; }
-  .grid-sm { grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 12px; }
-  .card-sm { min-height: 0; padding: 16px; gap: 10px; }
-  .card-sm .icon { width: 40px; height: 40px; border-radius: 11px; }
-  .card-sm .name { font-size: 1rem; }
-  .card-sm .desc { font-size: 0.86rem; }
-  .card-sm .foot { padding-top: 10px; font-size: 0.7rem; }
+  .chip:hover::before, .chip:focus-visible::before { opacity: 1; }
+  .chip:hover img, .chip:focus-visible img {
+    transform: rotate(-12deg) scale(1.08);
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2), 0 0 36px color-mix(in srgb, var(--glow) 70%, transparent);
+  }
+  .chip:hover .arrow, .chip:focus-visible .arrow {
+    transform: rotate(-45deg);
+    background: var(--glow);
+    border-color: var(--glow);
+    color: #0b0b12;
+    box-shadow: 0 0 24px color-mix(in srgb, var(--glow) 60%, transparent);
+  }
+  .chip:active { transform: translateY(-1px) scale(0.98); }
 
   footer {
-    margin-top: 64px;
+    margin-top: 72px;
     text-align: center;
-    font-size: 0.72rem;
+    font-size: 0.7rem;
     color: var(--ink-faint);
-    opacity: 0.8;
+    opacity: 0.7;
+  }
+
+  @media (max-width: 600px) {
+    .apps { gap: 10px; }
+    .chip img { width: 50px; height: 50px; }
+    .chip .name { font-size: 1.1rem; }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .card { animation: none; opacity: 1; transform: none; transition: none; }
-    .arrow { transition: none; }
+    *, *::before, *::after { animation: none !important; transition-duration: 0.01s !important; }
   }
 </style>
 </head>
 <body>
-<div class="wrap">
+<div class="nebula"></div>
+<div class="aura" id="aura"></div>
+<canvas id="space"></canvas>
+<div class="grain"></div>
+
+<div class="wrap" id="wrap">
   <header>
-    <p class="eyebrow">Projekt</p>
-    <h1>David Hefner</h1>
-    <p class="lead">Saker jag har byggt, samlade på ett ställe.</p>
+    <p class="eyebrow">Mitt lilla universum</p>
+    <h1 id="title" aria-label="David Hefner"></h1>
+    <p class="sub" aria-live="polite"><span id="typed"></span><span class="caret"></span></p>
   </header>
 
-  <main id="groups"></main>
+  <main class="apps" id="apps"></main>
 
   <footer>Made by: David Hefner</footer>
 </div>
 
-<script>
-  // Ordningen speglar hur stora projekten är: stora kort överst, mindre längre ner.
-  const P = {
-    reduceraren: { name: "Reduceraren", tag: "Stryktipset · Topptipset · PowerPlay", logo: "logos/reduceraren.png", color: "#1e6a42",
-      desc: "Bygg och reducera system, rätta live och följ utdelningen.", url: "https://reduceraren.se" },
-    kc: { name: "Krokens Copa", tag: "Tipptävling", logo: "logos/kc.png", color: "#0f2d51",
-      desc: "Tippa matchresultat mot gänget, med flera ligor och gemensam topplista.", url: "https://krokenscopa.pages.dev" },
-    bokis: { name: "Bokis", tag: "Friskis & Svettis", logo: "logos/bokis.png", color: "#8c2b2b",
-      desc: "Bokar gruppträningspassen automatiskt.", url: "https://bokis-39k.pages.dev/" },
-    abc: { name: "ABC & 123", tag: "Alice, Lily & Bo", logo: "logos/abc.png", color: "#6b3fd4",
-      desc: "Läs-, skriv- och räknespel för barnen på surfplattan.", url: "https://vg1414.github.io/AliceLily/" },
-    wsop: { name: "WSOP Fantasy", tag: "Gängets liga", logo: "logos/wsop.png", color: "#c0392b",
-      desc: "Följ Pick 8-fantasyligan i realtid under World Series of Poker.", url: "https://vg1414.github.io/wsop-fantasy-2026/" },
-    blackbook: { name: "Black Book", tag: "Skuldboken", logo: "logos/blackbook.png", color: "#6b5a3a",
-      desc: "Håll koll på skulder, vinster och förluster efter spelkvällarna.", url: "https://vg1414.github.io/BlackBook/" },
-    bad: { name: "Badläget", tag: "Costa del Sol", logo: "logos/bad.png", color: "#d9822b",
-      desc: "Badläge för stränderna i Torremolinos, Benalmádena och Fuengirola, plus vädret i Västerås.", url: "https://vg1414.github.io/Bad/" },
-    traning: { name: "Träningslogg", tag: "Styrka & cardio", logo: "logos/traning.png", color: "#25606b",
-      desc: "Logga passen, se statistiken och synka mellan enheter.", url: "https://vg1414.github.io/traning/" }
-  };
+<div id="flash"></div>
 
-  const GROUPS = [
-    { title: "Största projekten", size: "xl", items: [P.reduceraren, P.kc] },
-    { title: "Därefter", size: "lg", items: [P.bokis, P.abc, P.blackbook] },
-    { title: "Mindre projekt", size: "sm", items: [P.wsop, P.bad, P.traning] }
+<script>
+  // Alla appar, i ordning efter hur stora projekten är.
+  // glow = ljus variant av appens färg, så att den lyser mot rymden.
+  const APPS = [
+    { name: "Reduceraren", tag: "Systemspel för tipset", logo: "logos/reduceraren.png", glow: "#3fd18a",
+      desc: "Bygg och reducera system, rätta live och följ utdelningen.", url: "https://reduceraren.se" },
+    { name: "Krokens Copa", tag: "Tipptävling", logo: "logos/kc.png", glow: "#f2b631",
+      desc: "Tippa matchresultat mot gänget, med flera ligor och gemensam topplista.", url: "https://krokenscopa.pages.dev" },
+    { name: "Bokis", tag: "Friskis & Svettis", logo: "logos/bokis.png", glow: "#ff6b6b",
+      desc: "Bokar gruppträningspassen automatiskt.", url: "https://bokis-39k.pages.dev/" },
+    { name: "ABC & 123", tag: "Alice, Lily & Bo", logo: "logos/abc.png", glow: "#b48cff",
+      desc: "Läs-, skriv- och räknespel för barnen på surfplattan.", url: "https://vg1414.github.io/AliceLily/" },
+    { name: "Black Book", tag: "Skuldboken", logo: "logos/blackbook.png", glow: "#e2bd72",
+      desc: "Håll koll på skulder, vinster och förluster efter spelkvällarna.", url: "https://vg1414.github.io/BlackBook/" },
+    { name: "WSOP Fantasy", tag: "Pokerliga", logo: "logos/wsop.png", glow: "#ff4d5e",
+      desc: "Följ Pick 8-fantasyligan i realtid under World Series of Poker.", url: "https://vg1414.github.io/wsop-fantasy-2026/" },
+    { name: "Badläget", tag: "Costa del Sol", logo: "logos/bad.png", glow: "#ffb347",
+      desc: "Badläge för stränderna i Torremolinos, Benalmádena och Fuengirola, plus vädret i Västerås.", url: "https://vg1414.github.io/Bad/" },
+    { name: "Träningslogg", tag: "Styrka & cardio", logo: "logos/traning.png", glow: "#3cc7d6",
+      desc: "Logga passen, se statistiken och synka mellan enheter.", url: "https://vg1414.github.io/traning/" }
   ];
 
-  const ARROW = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M9 7h8v8"/></svg>';
+  const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const $ = (id) => document.getElementById(id);
+  const ARROW = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
 
-  const escape = (s) => s.replace(/[&<>"]/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[ch]));
-  const prettyUrl = (u) => u.replace(/^https?:\/\//, "").replace(/\/$/, "");
+  /* ---------- Rubrik: bokstav för bokstav + skrivmaskin ---------- */
+  $("title").innerHTML = [..."David Hefner"].map((ch, i) =>
+    ch === " " ? " " : `<span style="--i:${i}" aria-hidden="true">${ch}</span>`).join("");
 
-  let i = 0;
-  document.getElementById("groups").innerHTML = GROUPS.map((g) => `
-    <section>
-      <h2>${escape(g.title)}</h2>
-      <div class="grid grid-${g.size}">
-        ${g.items.map((p) => `
-          <a class="card card-${g.size}" href="${p.url}" target="_blank" rel="noopener" style="--c:${p.color};--i:${i++}">
-            <div class="top">
-              <img class="icon" src="${p.logo}" alt="" width="46" height="46" loading="lazy">
-              <div>
-                <p class="name">${escape(p.name)}</p>
-                <span class="tag">${escape(p.tag)}</span>
-              </div>
-            </div>
-            <p class="desc">${escape(p.desc)}</p>
-            <div class="foot"><span class="url">${prettyUrl(p.url)}</span><span class="arrow">${ARROW}</span></div>
-          </a>`).join("")}
-      </div>
-    </section>`).join("");
+  const LINES = [
+    `<b>${APPS.length}</b> publicerade projekt`,
+    "Verktyg för tips och spel",
+    "Appar för vardag och familj",
+    "Webbappar och PWA:er, byggda från grunden"
+  ];
+  (function typeLoop(li = 0) {
+    const el = $("typed");
+    const html = LINES[li];
+    const plain = html.replace(/<[^>]+>/g, "");
+    let n = 0;
+    const type = () => {
+      n++;
+      el.textContent = plain.slice(0, n);
+      if (n < plain.length) return setTimeout(type, 38 + Math.random() * 40);
+      el.innerHTML = html; // klar rad visas med fetstil
+      setTimeout(erase, 2800);
+    };
+    const erase = () => {
+      n--;
+      el.textContent = plain.slice(0, n);
+      if (n > 0) return setTimeout(erase, 18);
+      setTimeout(() => typeLoop((li + 1) % LINES.length), 300);
+    };
+    setTimeout(type, 1300);
+  })();
+
+  /* ---------- Bygg raderna ---------- */
+  $("apps").innerHTML = APPS.map((a, n) => `
+    <a class="chip" href="${a.url}" data-i="${n}" style="--glow:${a.glow};--i:${n}" title="${a.desc}">
+      <img src="${a.logo}" alt="">
+      <span class="text"><span class="name">${a.name}</span><span class="tag">${a.tag}</span></span>
+      <span class="arrow">${ARROW}</span>
+    </a>`).join("");
+
+  // Skenet i bakgrunden följer musen och tar färgen från raden man pekar på.
+  const aura = $("aura");
+  document.querySelectorAll("[data-i]").forEach((el) => {
+    const app = APPS[+el.dataset.i];
+    el.addEventListener("pointerenter", () => {
+      document.body.classList.add("aiming");
+      aura.style.setProperty("--aura", app.glow);
+    });
+    el.addEventListener("pointerleave", () => document.body.classList.remove("aiming"));
+    el.addEventListener("pointermove", (e) => {
+      const r = el.getBoundingClientRect();
+      el.style.setProperty("--mx", `${((e.clientX - r.left) / r.width) * 100}%`);
+    });
+    el.addEventListener("click", (e) => {
+      if (e.metaKey || e.ctrlKey || e.shiftKey) return; // ny flik: låt webbläsaren sköta det
+      e.preventDefault();
+      jump(app, el.querySelector("img"));
+    });
+  });
+
+  /* ---------- Stjärnfältet (3D, flyger mot dig) ---------- */
+  const space = $("space");
+  const ctx = space.getContext("2d");
+  let W, H, dpr;
+  function resize() {
+    dpr = Math.min(devicePixelRatio || 1, 2);
+    W = innerWidth;
+    H = innerHeight;
+    space.width = W * dpr;
+    space.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  addEventListener("resize", resize);
+  resize();
+
+  const STAR_COUNT = Math.round(Math.min(900, (W * H) / 1600));
+  const newStar = (anywhere) => ({
+    x: (Math.random() - 0.5) * 2,
+    y: (Math.random() - 0.5) * 2,
+    z: anywhere ? Math.random() : 1,
+    tw: Math.random() * Math.PI * 2,
+    hue: Math.random() < 0.15 ? (Math.random() < 0.5 ? 40 : 260) : 0
+  });
+  const stars = Array.from({ length: STAR_COUNT }, () => newStar(true));
+
+  const mouse = { x: 0.5, y: 0.5, sx: 0.5, sy: 0.5 };
+  addEventListener("pointermove", (e) => {
+    mouse.x = e.clientX / W;
+    mouse.y = e.clientY / H;
+    aura.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+  });
+
+  // warpSpeed: 0 = lugn färd, högre = stjärnorna blir streck.
+  // Sidan startar i hyperfart och bromsar in; vid hopp accelererar den igen.
+  let warpSpeed = reduceMotion ? 0 : 0.06;
+  let warpTarget = 0;
+  let shooting = null;
+  let last = performance.now();
+
+  function frame(now) {
+    const dt = Math.min(0.05, (now - last) / 1000);
+    last = now;
+    mouse.sx += (mouse.x - mouse.sx) * 0.05;
+    mouse.sy += (mouse.y - mouse.sy) * 0.05;
+    warpSpeed += (warpTarget - warpSpeed) * (warpTarget > warpSpeed ? 0.06 : 0.035);
+
+    const cx = W / 2 + (mouse.sx - 0.5) * -40;
+    const cy = H / 2 + (mouse.sy - 0.5) * -30;
+    const fov = Math.max(W, H) * 0.5;
+    const speed = reduceMotion ? 0 : 0.012 * dt + warpSpeed * dt * 10;
+    ctx.clearRect(0, 0, W, H);
+
+    for (const s of stars) {
+      const pz = s.z;
+      s.z -= speed;
+      if (s.z <= 0.02) { Object.assign(s, newStar(false)); continue; }
+      const px = cx + (s.x / s.z) * fov;
+      const py = cy + (s.y / s.z) * fov;
+      if (px < -50 || px > W + 50 || py < -50 || py > H + 50) { Object.assign(s, newStar(false)); continue; }
+      s.tw += dt * 2;
+      const a = Math.min(1, (1 - s.z) * 1.4) * (0.65 + 0.35 * Math.sin(s.tw));
+      const size = (1 - s.z) * 2.2 + 0.2;
+      const color = s.hue ? `hsla(${s.hue},90%,80%,${a})` : `rgba(255,255,255,${a})`;
+      if (warpSpeed > 0.004) {
+        // Hyperfart: rita stjärnan som ett streck från förra positionen.
+        ctx.strokeStyle = color;
+        ctx.lineWidth = size;
+        ctx.beginPath();
+        ctx.moveTo(cx + (s.x / pz) * fov, cy + (s.y / pz) * fov);
+        ctx.lineTo(px, py);
+        ctx.stroke();
+      } else {
+        ctx.fillStyle = color;
+        ctx.beginPath();
+        ctx.arc(px, py, size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    // Stjärnfall då och då
+    if (!reduceMotion && !shooting && Math.random() < dt * 0.12) {
+      const fromLeft = Math.random() < 0.5;
+      shooting = { x: fromLeft ? Math.random() * W * 0.5 : W * (0.5 + Math.random() * 0.5), y: Math.random() * H * 0.4,
+                   vx: (fromLeft ? 1 : -1) * (500 + Math.random() * 300), vy: 200 + Math.random() * 150, life: 1 };
+    }
+    if (shooting) {
+      const s = shooting;
+      s.x += s.vx * dt; s.y += s.vy * dt; s.life -= dt * 1.2;
+      const g = ctx.createLinearGradient(s.x, s.y, s.x - s.vx * 0.15, s.y - s.vy * 0.15);
+      g.addColorStop(0, `rgba(255,240,210,${Math.max(0, s.life)})`);
+      g.addColorStop(1, "rgba(255,240,210,0)");
+      ctx.strokeStyle = g;
+      ctx.lineWidth = 1.6;
+      ctx.beginPath();
+      ctx.moveTo(s.x, s.y);
+      ctx.lineTo(s.x - s.vx * 0.15, s.y - s.vy * 0.15);
+      ctx.stroke();
+      if (s.life <= 0) shooting = null;
+    }
+
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+
+  /* ---------- Hyperspace-hoppet ---------- */
+  // Stjärnorna sträcks ut till streck, sidan sugs in mot dig, skärmen blixtrar i appens färg – sedan öppnas appen.
+  let jumping = false;
+  function jump(app, fromEl) {
+    if (jumping) return;
+    if (reduceMotion) { location.href = app.url; return; }
+    jumping = true;
+    warpTarget = 0.09;
+    const flash = $("flash");
+    flash.style.setProperty("--fc", app.glow);
+    if (fromEl) {
+      const r = fromEl.getBoundingClientRect();
+      flash.style.setProperty("--fx", `${r.left + r.width / 2}px`);
+      flash.style.setProperty("--fy", `${r.top + r.height / 2}px`);
+    }
+    document.body.animate([{ filter: "none" }, { filter: "saturate(1.6) contrast(1.1)" }], { duration: 900, fill: "forwards" });
+    $("wrap").animate([{ transform: "scale(1)", opacity: 1, filter: "blur(0)" }, { transform: "scale(1.8)", opacity: 0, filter: "blur(6px)" }],
+      { duration: 800, easing: "cubic-bezier(.6,0,.9,.5)", fill: "forwards" });
+    flash.animate([{ opacity: 0 }, { opacity: 0, offset: 0.6 }, { opacity: 1 }], { duration: 1000, fill: "forwards" })
+      .onfinish = () => { location.href = app.url; };
+  }
+
+  // Kommer man tillbaka med bakåtknappen ska sidan inte vara kvar i "hoppat"-läget.
+  addEventListener("pageshow", (e) => { if (e.persisted) location.reload(); });
 </script>
 </body>
 </html>
