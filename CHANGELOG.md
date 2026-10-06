@@ -1,6 +1,7 @@
 # Changelog
 
 ## 2026-10-06
+- Badläget heter nu Spanien och länkar till vg1414.github.io/spanien/
 - Längre intro: hyperfarten hålls medan namnet tonar fram, sedan bromsar stjärnorna in och apparna dyker upp
 - Namnets silverskimmer ersatt med ett diskret norrskenssvep i grönt, blått och lila som går över hela namnet då och då
 - Favicon och hemskärmsikon (vit stjärna på mörk botten) + webbmanifest så sidan kan läggas på hemskärmen som en app
