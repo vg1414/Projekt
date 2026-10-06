@@ -7,7 +7,7 @@ En personlig startsida som samlar länkar till alla mina publicerade webbprojekt
 ## Funktioner
 
 - 3D-stjärnfält som flyger mot dig, nebulosor, stjärnfall och lätt parallax när musen rör sig
-- Namnet i vitt som tonar in bokstav för bokstav, med ett diskret silverskimmer, plus en skrivmaskinsrad
+- Namnet i vitt som tonar in bokstav för bokstav; ungefär var 14:e sekund sveper ett diskret norrsken (grönt, blått, lila) över det. Under namnet en skrivmaskinsrad
 - Alla appar som glaskapslar (logga, namn, tagg, pil) i en lista, i ordning efter hur stora projekten är:
   Reduceraren, Krokens Copa, Bokis, ABC & 123, Black Book, WSOP Fantasy, Badläget, Träningslogg
 - Hovra en kapsel: den lyfter, lyser i appens färg, loggan vrider sig och pilen fylls; beskrivningen visas som tooltip
