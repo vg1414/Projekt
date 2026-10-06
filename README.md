@@ -14,6 +14,7 @@ En personlig startsida som samlar länkar till alla mina publicerade webbprojekt
 - Klick → hyperspace-hopp (stjärnorna blir streck, blixt i appens färg) och sedan öppnas appen
 - Ctrl/Cmd-klick öppnar i ny flik som vanligt
 - Respekterar "minska rörelse" i enhetens inställningar
+- Egen ikon och webbmanifest: kan läggas på hemskärmen och öppnas som en app i helskärm
 - Dold för sökmotorer (`noindex`), sidan är för eget bruk
 
 ## Lägga till ett projekt
