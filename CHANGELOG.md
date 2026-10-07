@@ -1,5 +1,8 @@
 # Changelog
 
+## 2026-10-07
+- Krokens Copa länkar till nya adressen krokenscopa.se
+
 ## 2026-10-06
 - Badläget heter nu Spanien och länkar till vg1414.github.io/spanien/
 - Längre intro: hyperfarten hålls medan namnet tonar fram, sedan bromsar stjärnorna in och apparna dyker upp
