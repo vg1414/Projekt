@@ -1,5 +1,8 @@
 # Changelog
 
+## 2026-10-12
+- OFC Solver tillagd bland projekten (trea i listan, med appens spelkortsikon som logga)
+
 ## 2026-10-07
 - Krokens Copa länkar till nya adressen krokenscopa.se
 
